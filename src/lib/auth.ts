@@ -1,34 +1,56 @@
 import NextAuth from "next-auth";
 import bcrypt from "bcryptjs";
-import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import { LoginError } from "@/lib/errors";
 import { prisma } from "@/lib/prisma";
 import { Role } from "@/generated/prisma/enums";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    Google,
+    Google({
+      authorization: {
+        params: {
+          prompt: "select_account",
+        },
+      },
+    }),
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials.email || !credentials.password) return null;
+        if (!credentials.email || !credentials.password)
+          throw new LoginError("Campos vazios.");
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
         });
 
-        if (!user || !user.password) return null;
+        if (!user)
+          throw new LoginError(
+            "Email não cadastrado. Crie uma conta e tente novamente.",
+          );
+
+        if (user && !user.password) {
+          throw new LoginError(
+            "Este email já está vinculado ao Google. Faça login com o Google.",
+          );
+        }
+
+        // Email verification
+        if (!user.emailVerified) {
+          throw new LoginError("Verifique o seu email.");
+        }
 
         // verificar senha com bcrypt
         const passwordMatch = await bcrypt.compare(
           credentials.password as string,
-          user.password,
+          user.password!,
         );
 
-        if (!passwordMatch) return null;
+        if (!passwordMatch) throw new LoginError("Senha incorreta.");
 
         return user;
       },

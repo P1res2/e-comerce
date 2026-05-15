@@ -1,14 +1,22 @@
+import { handleGoogleLogin } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
-import { signIn } from "@/lib/auth";
+import { toast } from "sonner";
 
 export function GoogleSignIn() {
-  const handleGoogleSignIn = async () => {
-    "use server";
-    await signIn("google");
+  const onSubmit = async () => {
+    const promise = handleGoogleLogin();
+
+    toast.promise(promise, {
+      loading: "Entrando...",
+      success: (data) => data.message,
+      error: (err) => err.message,
+    });
+
+    await promise;
   };
 
   return (
-    <form action={handleGoogleSignIn}>
+    <form action={onSubmit}>
       <Button className="w-full" variant="outline" type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path

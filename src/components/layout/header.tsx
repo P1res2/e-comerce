@@ -6,10 +6,13 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { signOut } from "@/lib/auth";
+import { auth, signOut } from "@/lib/auth";
 import { CircleUser, SearchIcon, ShoppingCart } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export async function AppHeader() {
+  const session = await auth();
+
   return (
     <header className="sticky z-50 top-0 h-24 w-full px-32 flex justify-between items-center bg-zinc-200 dark:bg-black">
       <div className="flex">
@@ -33,6 +36,7 @@ export async function AppHeader() {
             size="icon"
             onClick={async () => {
               "use server";
+              if (!session?.user) redirect("/login");
               await signOut();
             }}
           >
