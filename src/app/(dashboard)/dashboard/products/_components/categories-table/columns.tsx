@@ -1,3 +1,5 @@
+import { Category } from "@/types";
+import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,11 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ProductWithCategory } from "@/types";
-import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
-export const columns: ColumnDef<ProductWithCategory>[] = [
+export const columns: ColumnDef<Category>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -24,33 +24,8 @@ export const columns: ColumnDef<ProductWithCategory>[] = [
     header: "Nome",
   },
   {
-    accessorKey: "price",
-    header: "Price",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"));
-      const formatted = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(amount);
-
-      return <div className="font-medium text-green-300">{formatted}</div>;
-    },
-  },
-  {
-    accessorKey: "stock",
-    header: "Estoque",
-  },
-  {
-    accessorKey: "category",
-    header: "Categoria",
-    cell: ({ row }) => {
-      const { category } = row.original;
-      return <div>{category.name || "-"}</div>;
-    },
-  },
-  {
-    accessorKey: "isActive",
-    header: "Ativo",
+    accessorKey: "slug",
+    header: "Slug",
   },
   {
     id: "actions",

@@ -8,6 +8,7 @@ import {
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
@@ -51,8 +52,10 @@ export default function RootLayout({
       )}
     >
       <body>
-        {children}
-        <Toaster />
+        <ScrollArea className="h-screen">
+          {children}
+          <Toaster />
+        </ScrollArea>
       </body>
     </html>
   );

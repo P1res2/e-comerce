@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default async function DashboardLayout({
@@ -9,7 +10,10 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
-      <main className="min-h-full w-full">{children}</main>
+
+      <main className="min-h-full w-full container mx-auto my-8 px-4">
+        {children}
+      </main>
     </SidebarProvider>
   );
 }
