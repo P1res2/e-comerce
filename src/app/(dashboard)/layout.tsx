@@ -1,7 +1,15 @@
-export default function DashboardLayout({
+import { AppSidebar } from "@/components/layout/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="min-h-full flex flex-col">{children}</div>;
+  return (
+    <SidebarProvider defaultOpen={false}>
+      <AppSidebar />
+      <main className="min-h-full w-full">{children}</main>
+    </SidebarProvider>
+  );
 }

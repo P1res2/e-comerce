@@ -10,13 +10,14 @@ export default async function Home() {
     { title: "Meias", price: 19.99 },
     { title: "Cueca", price: 29.99 },
     { title: "Shirt", price: 59.99 },
+    { title: "Bolsa", price: 39.99 },
   ];
 
   return (
-    <main className="flex flex-wrap gap-8 lg:w-[1600px]">
+    <main className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {products.map((item) => {
         return (
-          <Card key={item.title} className="p-4 flex flex-col gap-2">
+          <Card key={item.title} className="p-4 flex flex-col gap-2 max-w-[280px]">
             <div className="w-[250px] h-[250px] bg-gray-400 transition animate-pulse" />
             <span>{item.title}</span>
             <span>R${item.price.toString().replace(".", ",")}</span>

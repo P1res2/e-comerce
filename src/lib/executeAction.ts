@@ -20,12 +20,11 @@ export async function executeAction<T>({
       message: successMessage,
     };
   } catch (error) {
-    if (error instanceof CredentialsSignin) {
-      throw new Error(error.code);
-    }
-    if (isRedirectError(error)) {
-      throw error;
-    }
+    console.log("tipo do erro:", error?.constructor?.name);
+    console.log("erro completo:", error);
+    if (isRedirectError(error)) throw error;
+
+    if (error instanceof CredentialsSignin) throw new Error(error.code);
 
     throw new Error(errorMessage);
   }

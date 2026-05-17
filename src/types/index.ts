@@ -15,3 +15,7 @@ export type CartWithItems = Cart & {
 export type OrderWithItems = Order & {
   items: (OrderItem & { product: Product })[]
 }
+
+export type ProductWithCategory = Product & {
+  category: Category
+}
